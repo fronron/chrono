@@ -43,9 +43,9 @@
 # TODO:
 # - caller needs to link with libiomp5md.lib or /Qopenmp...
 # - runtime DLLs:
-#   <Composer XE directory> -> C:\Program Files\Intel\ComposerXE-2011
-#     redist\ia32\mkl
-#     redist\intel64\mkl
+#   <Composer XE directory> -> C:/Program Files/Intel/ComposerXE-2011
+#     redist/ia32/mkl
+#     redist/intel64/mkl
 # Intel from version 2016 seems to provide a common path for Win and Linux: <intel_dir>/compilers_and_libraries/${OS}/mkl and so on...
 
 set(_MKL_IA32 FALSE)
@@ -58,9 +58,10 @@ else()
     message(FATAL_ERROR "Unsupported 'void *' size (${SIZEOF_VOID_P})")
 endif()
 
+
 # Versions should be listed is decreasing order of preference
 set(_MKL_TEST_VERSIONS ${MKL_ADDITIONAL_VERSIONS}
-    "2011"
+    "2011" "2016" "2017"
     # alternative form: "2011.xxx.y"
     # (y is the release-update number and xxx is the package number)
 )
@@ -105,11 +106,12 @@ set(_MKL_ROOT_SEARCH_DIRS
   ${MKL_ROOT}
 )
 
-
 if (WIN32)
-	list(APPEND _MKL_ROOT_SEARCH_DIRS "$ENV{ProgramFiles}/Intel/Composer XE/mkl") # default until ParallelStudioXE2015
-	list(APPEND _MKL_ROOT_SEARCH_DIRS "$ENV{ProgramFiles}/IntelSWTools/compilers_and_libraries/windows/mkl") # default for ParallelStudioXE2016 and later
-else()
+	SET(PROGRAM_FILE_ENVVAR "ProgramFiles(x86)")
+	FILE(TO_CMAKE_PATH "$ENV{PROGRAM_FILE_ENVVAR}" PRG_FOLD)
+	list(APPEND _MKL_ROOT_SEARCH_DIRS "${PRG_FOLD}/Intel/Composer XE/mkl") # default until ParallelStudioXE2015
+	list(APPEND _MKL_ROOT_SEARCH_DIRS "${PRG_FOLD}/IntelSWTools/compilers_and_libraries/windows/mkl") # default for ParallelStudioXE2016 and later
+elseif(UNIX AND NOT APPLE)
 	foreach (_MKL_VER ${_MKL_TEST_VERSIONS})
 		list(APPEND _MKL_ROOT_SEARCH_DIRS "/opt/intel/composerxe-${_MKL_VER}/mkl") # default until ParallelStudioXE2015 (root permissions)
 		list(APPEND _MKL_ROOT_SEARCH_DIRS "$ENV{HOME}/intel/composerxe-${_MKL_VER}/mkl") # default until ParallelStudioXE2015 (no root permissions)
@@ -117,6 +119,8 @@ else()
 	list(APPEND _MKL_ROOT_SEARCH_DIRS "/opt/intel/compilers_and_libraries/linux/mkl") # default for ParallelStudioXE2016 and later (root permissions)
 	list(APPEND _MKL_ROOT_SEARCH_DIRS "$ENV{HOME}/intel/compilers_and_libraries/linux/mkl") # default for ParallelStudioXE2016 and later (no root permissions)
 endif()
+
+MESSAGE(STATUS "_MKL_ROOT_SEARCH_DIRS is ${_MKL_ROOT_SEARCH_DIRS}")
 
 
 if (MKL_FIND_DEBUG)
@@ -326,9 +330,9 @@ if (MKL_FIND_DEBUG)
     if (MKL_FOUND)
         if (NOT MKL_FIND_QUIETLY OR MKL_FIND_DEBUG)
             message(STATUS
-                "Intel(R) MKL was found:\n"
-                "  MKL_INCLUDE_DIRS: ${MKL_INCLUDE_DIRS}\n"
-                "  MKL_LIBRARY_DIRS: ${MKL_LIBRARY_DIRS}\n"
+                "Intel(R) MKL was found:/n"
+                "  MKL_INCLUDE_DIRS: ${MKL_INCLUDE_DIRS}/n"
+                "  MKL_LIBRARY_DIRS: ${MKL_LIBRARY_DIRS}/n"
                 "  MKL_LIBRARIES: ${MKL_LIBRARIES}"
             )
         endif()
