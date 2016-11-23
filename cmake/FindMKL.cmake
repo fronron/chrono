@@ -266,6 +266,8 @@ else()
         message(STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
                        "Found IOMP5_LIBRARY: ${IOMP5_LIBRARY}")
     endif()
+    
+    #######################################
 
     get_filename_component(_MKL_LIB_PATH "${IOMP5_LIBRARY}" PATH)
     list(APPEND MKL_LIBRARY_DIRS ${_MKL_LIB_PATH})
