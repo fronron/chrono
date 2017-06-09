@@ -192,9 +192,9 @@ class ChApi ChForce : public ChObj {
     // UPDATING
     //
 
-    void UpdateTime(double mytime);
-    void UpdateState();
-    void Update(double mytime);
+    virtual void UpdateTime(double mytime);
+    virtual void UpdateState();
+    virtual void Update(double mytime);
 
     //
     // SERIALIZATION
