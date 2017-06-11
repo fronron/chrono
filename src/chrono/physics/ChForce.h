@@ -67,7 +67,7 @@ class ChApi ChForce : public ChObj {
     CH_ENUM_VAL(WORLD_DIR);
     CH_ENUM_MAPPER_END(AlignmentFrame);
 
-  private:
+  protected:
     ChBody* Body;  ///< object of application
 
     ForceType mode;        ///< force or torque
