@@ -58,7 +58,7 @@ class ChApi ChPhysicsItem : public ChObj {
     virtual ChPhysicsItem* Clone() const override { return new ChPhysicsItem(*this); }
 
     /// Get the pointer to the parent ChSystem()
-    ChSystem* GetSystem() const { return system; }
+    virtual ChSystem* GetSystem() const { return system; }
 
     /// Set the pointer to the parent ChSystem() and
     /// also add to new collision system / remove from old coll.system
